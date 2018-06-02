@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
@@ -41,11 +42,28 @@ public class TilePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
+		int largeurRectangle = 0;
+		int centreRectangle;
+		
+		Font numberFont = new Font ("Arial Bold", Font.ROMAN_BASELINE, 80);
+		g.setFont(numberFont);
+		
+		if(gameModelHandle.getDigits().length()!=0) 
+			largeurRectangle = this.getWidth()/gameModelHandle.getDigits().length();
+	
 		// TODO Seek current game information from the model and draw the tiles accordingly
 		
-		// EXAMPLE: Paint a rectangle with the first colour
-		g.setColor(colours[0]);
-		g.fillRect(0, 0, this.getWidth(), 128);
+		System.out.println(gameModelHandle.getDigits());
+		
+		for(int i=0; i<gameModelHandle.getDigits().length(); i++) {
+			
+			centreRectangle = i*largeurRectangle + largeurRectangle/2;
+			g.setColor(colours[i]);
+			g.fillRoundRect(i*largeurRectangle, 0, largeurRectangle, 128, 30, 40);
+			g.setColor(Color.BLACK);
+			g.drawString(gameModelHandle.getDigits().substring(i, i+1),centreRectangle-20 , 96);
+		}
+		
 	}
 	
 	public TilePanel(GameModel gameModel) {
