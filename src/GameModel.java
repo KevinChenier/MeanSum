@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.awt.Color;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +18,9 @@ public class GameModel {
 	
 	int groupNumber;
 	
-	boolean stateSelection;
+	boolean stateSelection = false;
+	
+	int largeurRectangle = 0;
 	
 	// TODO Implement constructor and methods (generation of a game, etc.)
 	
@@ -51,9 +54,30 @@ public class GameModel {
 		for(int i=0; i<numberList.size(); i++)
 			listCaracters = listCaracters + numberList.get(i);
 		
-		
 		return listCaracters;
 		
+	}
+	
+	public void createCases() {
+		
+		int digitsLength = this.getDigits().length();
+		
+		for(int i=0; i<digitsLength; i++)
+			Case.cases.add(new Case(Integer.parseInt(this.getDigits().substring(i, i+1)), this.stateSelection));
+	}
+	
+	public void setCasesDimensions(TilePanel tilepanel) {
+		
+		//A ENLEVER LORSQUE gameModelHandle SERA INTSANCIÉ AU DÉBUT
+		if(this.getDigits().length()!=0) 
+				largeurRectangle = tilepanel.getWidth()/this.getDigits().length();
+			
+		for(int i=0; i<this.getDigits().length(); i++) {
+			Case.cases.get(i).setX0(i*largeurRectangle);
+			Case.cases.get(i).setY0(0);
+			Case.cases.get(i).setX1(largeurRectangle);
+			Case.cases.get(i).setX1(128);
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -64,11 +88,11 @@ public class GameModel {
 			
 			test.generateGame();
 						
-			System.out.println("Liste" + i +": " + test.numberList);
+			System.out.println("Liste" + i +": " + GameModel.numberList);
 			
 			System.out.println("Chaîne de caractères contenant les nombres générés: " + test.getDigits());
 			
-			test.numberList.clear();
+			GameModel.numberList.clear();
 		}
 		
 	}

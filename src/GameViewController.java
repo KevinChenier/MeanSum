@@ -25,6 +25,7 @@ public class GameViewController extends JPanel {
 	
 	// TODO Add all the other required UI components (labels, buttons, etc.)
 	JButton nextButton;
+	JButton reset;
 	
 	private void setupListeners() {		
 		// TODO Set up the required listeners on the UI components (button clicks, etc.)
@@ -32,22 +33,26 @@ public class GameViewController extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameModel.numberList.clear();
-				gameModel.generateGame();
-				repaint();
+				Case.cases.clear();
 				
+				gameModel.generateGame();
+				gameModel.createCases();
+				
+				repaint();	
 			}
 		});
 		
 		// EXAMPLE: A mouse listener with a click event
 		tilePanel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("PRESS");
+			public void mousePressed(MouseEvent e) {
+				
+				System.out.println("PRESS" + tilePanel.getMousePosition());
 			}
 			
 			@Override
 			public void  mouseReleased(MouseEvent e) {
-				System.out.println("RELEASED");
+				System.out.println("RELEASED" + tilePanel.getMousePosition());
 			}
 		});
 		
@@ -67,6 +72,9 @@ public class GameViewController extends JPanel {
 		// TODO Initialize all the UI components
 		nextButton = new JButton("NEXT");
 		this.add(nextButton);
+		
+		reset = new JButton("RESET");
+		this.add(reset);
 		
 		setupListeners();
 	}

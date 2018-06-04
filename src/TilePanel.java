@@ -8,6 +8,9 @@ import javax.swing.JPanel;
  *
  */
 public class TilePanel extends JPanel {
+	
+	private int largeurRectangle;
+	private int centreRectangle;
 
 	/**
 	 * The tile panel object holds a reference to the game model to
@@ -19,6 +22,8 @@ public class TilePanel extends JPanel {
 	 * A table of colours that can be used to draw the tiles
 	 */
 	private Color[] colours;
+	
+	Font numberFont = new Font ("Arial Bold", Font.ROMAN_BASELINE, 80);
 	
 	/**
 	 * Initialize an array of pre-set colours.
@@ -40,14 +45,15 @@ public class TilePanel extends JPanel {
 	
 	@Override
 	protected void paintComponent(Graphics g) {
+		
 		super.paintComponent(g);
 		
-		int largeurRectangle = 0;
-		int centreRectangle;
-		
-		Font numberFont = new Font ("Arial Bold", Font.ROMAN_BASELINE, 80);
+		//A ENLEVER LORSQUE gameModelHandle SERA INTSANCIÉ AU DÉBUT
+		largeurRectangle = 0;
+
 		g.setFont(numberFont);
 		
+		//A ENLEVER LORSQUE gameModelHandle SERA INTSANCIÉ AU DÉBUT
 		if(gameModelHandle.getDigits().length()!=0) 
 			largeurRectangle = this.getWidth()/gameModelHandle.getDigits().length();
 	
@@ -56,16 +62,21 @@ public class TilePanel extends JPanel {
 		System.out.println(gameModelHandle.getDigits());
 		
 		for(int i=0; i<gameModelHandle.getDigits().length(); i++) {
+			if(Case.cases.get(i).getState()==false)
+				g.setColor(Color.WHITE);
 			
 			centreRectangle = i*largeurRectangle + largeurRectangle/2;
-			g.setColor(colours[i]);
-			g.fillRoundRect(i*largeurRectangle, 0, largeurRectangle, 128, 30, 40);
+			g.fillRoundRect(i*largeurRectangle, 0, largeurRectangle, 128, 50, 60);
 			g.setColor(Color.BLACK);
 			g.drawString(gameModelHandle.getDigits().substring(i, i+1),centreRectangle-20 , 96);
 		}
 		
+		//Call to the method for setting the dimensions for the cases
+		gameModelHandle.setCasesDimensions(this);
+		
 	}
 	
+		
 	public TilePanel(GameModel gameModel) {
 		if (gameModel == null)
 			throw new IllegalArgumentException("Should provide a valid instance of GameModel!");
