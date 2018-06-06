@@ -59,23 +59,76 @@ public class TilePanel extends JPanel {
 	
 		// TODO Seek current game information from the model and draw the tiles accordingly
 		
-		System.out.println(gameModelHandle.getDigits());
-		
 		for(int i=0; i<gameModelHandle.getDigits().length(); i++) {
-			if(Case.cases.get(i).getState()==false)
-				g.setColor(Color.WHITE);
 			
-			centreRectangle = i*largeurRectangle + largeurRectangle/2;
-			g.fillRoundRect(i*largeurRectangle, 0, largeurRectangle, 128, 50, 60);
-			g.setColor(Color.BLACK);
-			g.drawString(gameModelHandle.getDigits().substring(i, i+1),centreRectangle-20 , 96);
+			if(Case.cases.get(i).getState()==false) {
+				
+				paintRoundRectangle (g, Color.WHITE, largeurRectangle, this.getHeight()/2+20, i);
+				centreRectangle = i*largeurRectangle + largeurRectangle/2;
+				drawStringOnCases (g, Color.BLACK, gameModelHandle.getDigits().substring(i, i+1), centreRectangle-20, this.getHeight()/4+30);
+			
+			}
+			
+			else if(Case.cases.get(i).isInGroup()==true) {
+				
+				paintRoundRectangle (g, colours[i], largeurRectangle, this.getHeight()/2+20, i);
+				centreRectangle = i*largeurRectangle + largeurRectangle/2;
+				drawStringOnCases (g, Color.BLACK, gameModelHandle.getDigits().substring(i, i+1), centreRectangle-20, this.getHeight()/4+30);
+				
+				i++;
+				
+				paintRoundRectangle (g, colours[i-1], largeurRectangle, this.getHeight()/2+20, i);
+				centreRectangle = i*largeurRectangle + largeurRectangle/2;
+				drawStringOnCases (g, Color.BLACK, gameModelHandle.getDigits().substring(i, i+1), centreRectangle-20, this.getHeight()/4+30);
+				
+			}
+			
+			else {
+				paintRoundRectangle (g, colours[i], largeurRectangle, this.getHeight()/2+20, i);
+				centreRectangle = i*largeurRectangle + largeurRectangle/2;
+				drawStringOnCases (g, Color.BLACK, gameModelHandle.getDigits().substring(i, i+1), centreRectangle-20, this.getHeight()/4+30);
+			}
 		}
-		
-		//Call to the method for setting the dimensions for the cases
-		gameModelHandle.setCasesDimensions(this);
+		//Call to the method for setting the dimensions of the cases
+		gameModelHandle.setCasesDimensions(this,largeurRectangle,this.getHeight()/2+20);
 		
 	}
 	
+	public int caseSelection (int positionX, int positionY) {
+		
+		int identifiant = 0;
+
+		for(int i=0; i<gameModelHandle.getDigits().length(); i++) {
+	
+			if(positionX > Case.cases.get(i).getX0() && 
+			positionX < Case.cases.get(i).getX1() &&
+			positionY > Case.cases.get(i).getY0() && 
+			positionY < Case.cases.get(i).getY1()) {
+	
+				identifiant = Case.cases.get(i).getIdentifiant();
+				break;
+				
+			} else
+				identifiant = -1;
+		} 
+		
+		return identifiant;
+	
+	}
+	
+	private void paintRoundRectangle (Graphics g, Color colour, int width, int height, int position) {
+		
+		g.setColor(colour);
+		g.fillRoundRect(position*width, 0, width, height, 50, 60);
+		
+	}
+	
+	private void drawStringOnCases (Graphics g, Color colour, String string, int x, int y) {
+		
+		g.setColor(Color.BLACK);
+		g.drawString(string,x , y);
+		
+	}
 		
 	public TilePanel(GameModel gameModel) {
 		if (gameModel == null)

@@ -16,11 +16,8 @@ public class GameModel {
 	
 	Random random = new Random();
 	
-	int groupNumber;
-	
-	boolean stateSelection = false;
-	
-	int largeurRectangle = 0;
+	private int groupNumber;
+	private boolean stateSelection = false;
 	
 	// TODO Implement constructor and methods (generation of a game, etc.)
 	
@@ -42,9 +39,7 @@ public class GameModel {
 				numberList.add(getRandom(1,9));
 			else
 				numberList.add(getRandom(10,99));
-			
 		}
-		
 	}
 	
 	public String getDigits() {
@@ -55,7 +50,6 @@ public class GameModel {
 			listCaracters = listCaracters + numberList.get(i);
 		
 		return listCaracters;
-		
 	}
 	
 	public void createCases() {
@@ -63,21 +57,41 @@ public class GameModel {
 		int digitsLength = this.getDigits().length();
 		
 		for(int i=0; i<digitsLength; i++)
-			Case.cases.add(new Case(Integer.parseInt(this.getDigits().substring(i, i+1)), this.stateSelection));
+			Case.cases.add(new Case(Integer.parseInt(this.getDigits().substring(i, i+1)), this.stateSelection, i));
 	}
 	
-	public void setCasesDimensions(TilePanel tilepanel) {
-		
-		//A ENLEVER LORSQUE gameModelHandle SERA INTSANCIÉ AU DÉBUT
-		if(this.getDigits().length()!=0) 
-				largeurRectangle = tilepanel.getWidth()/this.getDigits().length();
+	public void setCasesDimensions(TilePanel tilePanel, int largeurRectangle, int hauteurRectangle) {
 			
 		for(int i=0; i<this.getDigits().length(); i++) {
 			Case.cases.get(i).setX0(i*largeurRectangle);
 			Case.cases.get(i).setY0(0);
-			Case.cases.get(i).setX1(largeurRectangle);
-			Case.cases.get(i).setX1(128);
+			Case.cases.get(i).setX1(largeurRectangle+i*largeurRectangle);
+			Case.cases.get(i).setY1(hauteurRectangle);
 		}
+	}
+	
+	public boolean validSelection (int identifiantCase1, int identifiantCase2) {
+		
+		if(
+		(identifiantCase1+1 == identifiantCase2 
+		|| identifiantCase1-1 == identifiantCase2 
+		|| identifiantCase1 == identifiantCase2)
+		&&
+		(identifiantCase1!=-1 
+		&& identifiantCase2!=-1)
+		) 
+			return true;
+		else
+			return false;
+	}
+	
+	public int getGoal() {
+		
+		int somme = 0;
+		
+		for(int i=0; i<numberList.size(); i++)
+			somme += numberList.get(i);
+		return somme;
 	}
 	
 	public static void main(String[] args) {
@@ -94,7 +108,5 @@ public class GameModel {
 			
 			GameModel.numberList.clear();
 		}
-		
 	}
-	
 }
