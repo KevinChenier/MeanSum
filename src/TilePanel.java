@@ -4,13 +4,26 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 /**
- * The tile panel displays all the tiles (one per digit) of the game.
- *
+ * The tile panel displays all the tiles (one per digit) of the game. This class also holds a method
+ * that will retain a case that has been selected by the player. This class has attributes that will retain
+ * the rectangle width and center. 
+ * Methods:
+ * paintComponent(Graphics g), used to make graphics
+ * paintRoundRectangle(Graphics g, Color color, int width, int height, int position, this method is used to
+ * paint round rectangle in the tile panel. 
+ * drawString(Graphics g, Color color, String digit, int x, int y), this method is used to draw a digit
+ * on each round rectangle.
+ * 
+ * @author Kevin Chenier
+ * @version E2018
  */
 public class TilePanel extends JPanel {
 	
 	private int largeurRectangle;
 	private int centreRectangle;
+	
+	//An attribut used for iterations purposes (no need to create a variable each time for iteration
+	private int iterator;
 
 	/**
 	 * The tile panel object holds a reference to the game model to
@@ -23,6 +36,7 @@ public class TilePanel extends JPanel {
 	 */
 	private Color[] colours;
 	
+	//A new font is used for digits that are written in round rectangles
 	Font numberFont = new Font ("Arial Bold", Font.ROMAN_BASELINE, 80);
 	
 	/**
@@ -39,73 +53,133 @@ public class TilePanel extends JPanel {
 		
 		// Allocate and fill our colour array with the colour codes
 		colours = new Color[tileColourCodes.length];
-		for (int i = 0; i < colours.length; ++i)
-			colours[i] = Color.decode(tileColourCodes[i]);
+		for (iterator = 0; iterator < colours.length; ++iterator)
+			colours[iterator] = Color.decode(tileColourCodes[iterator]);
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
-		
-		//A ENLEVER LORSQUE gameModelHandle SERA INTSANCIÉ AU DÉBUT
-		largeurRectangle = 0;
 
+		//This will set the font of g to numberFont
 		g.setFont(numberFont);
 		
-		//A ENLEVER LORSQUE gameModelHandle SERA INTSANCIÉ AU DÉBUT
-		if(gameModelHandle.getDigits().length()!=0) 
-			largeurRectangle = this.getWidth()/gameModelHandle.getDigits().length();
-	
-		// TODO Seek current game information from the model and draw the tiles accordingly
+		/*
+		 * The width of the rectangles will be equal to the width of the window divided by the number
+		 * of digits that are in numberList
+		 */
+		largeurRectangle = this.getWidth()/gameModelHandle.getDigits().length();
 		
-		for(int i=0; i<gameModelHandle.getDigits().length(); i++) {
+		//This for loop is used to paint as much rectangle as there are digits in numberList
+		for(iterator=0; iterator<gameModelHandle.getDigits().length(); iterator++) {
 			
-			if(Case.cases.get(i).getState()==false) {
-				
-				paintRoundRectangle (g, Color.WHITE, largeurRectangle, this.getHeight()/2+20, i);
-				centreRectangle = i*largeurRectangle + largeurRectangle/2;
-				drawStringOnCases (g, Color.BLACK, gameModelHandle.getDigits().substring(i, i+1), centreRectangle-20, this.getHeight()/4+30);
+			/*
+			 * We first check if the goal has been obtained by the player. If it has been obtained
+			 * we paint every rectangle, we paint its digits and we set the color's rectangles to
+			 * green
+			 */
 			
-			}
+			if(gameModelHandle.checkIfGoalObtained()==true) {
+				paintRoundRectangle(g, Color.GREEN, largeurRectangle, this.getHeight()/2+20, iterator);
+				centreRectangle = iterator*largeurRectangle + largeurRectangle/2;
+				drawStringOnCase(g, Color.BLACK, gameModelHandle.getDigits().substring(iterator, iterator+1), centreRectangle-20, this.getHeight()/4+30);
 			
-			else if(Case.cases.get(i).isInGroup()==true) {
+			/*
+			 * If the goal has not been obtained, we then check if all the cases have been selected by the player OR if
+			 * the player has surpassed the goal with the current sum. If this is the case, we paint every rectangle,
+			 * we paint its digits and we set the color's rectangles to red
+			 */
+		
+			} else if(gameModelHandle.checkIfAllCasesSelected()==true || gameModelHandle.sommeBiggerThanGoal()==true) {
 				
-				paintRoundRectangle (g, colours[i], largeurRectangle, this.getHeight()/2+20, i);
-				centreRectangle = i*largeurRectangle + largeurRectangle/2;
-				drawStringOnCases (g, Color.BLACK, gameModelHandle.getDigits().substring(i, i+1), centreRectangle-20, this.getHeight()/4+30);
+				paintRoundRectangle(g, Color.RED, largeurRectangle, this.getHeight()/2+20, iterator);
+				centreRectangle = iterator*largeurRectangle + largeurRectangle/2;
+				drawStringOnCase(g, Color.BLACK, gameModelHandle.getDigits().substring(iterator, iterator+1), centreRectangle-20, this.getHeight()/4+30);
 				
-				i++;
-				
-				paintRoundRectangle (g, colours[i-1], largeurRectangle, this.getHeight()/2+20, i);
-				centreRectangle = i*largeurRectangle + largeurRectangle/2;
-				drawStringOnCases (g, Color.BLACK, gameModelHandle.getDigits().substring(i, i+1), centreRectangle-20, this.getHeight()/4+30);
-				
-			}
+			/*
+			 * If the goal has not been obtained yet, and the cases were not all selected by the
+			 *  player or he did not yet surpassed the goal with his selections, then we check
+			 *  other conditions
+			 */
 			
-			else {
-				paintRoundRectangle (g, colours[i], largeurRectangle, this.getHeight()/2+20, i);
-				centreRectangle = i*largeurRectangle + largeurRectangle/2;
-				drawStringOnCases (g, Color.BLACK, gameModelHandle.getDigits().substring(i, i+1), centreRectangle-20, this.getHeight()/4+30);
+			} else {
+				
+				/*
+				 * If the case has not been selected yet, we draw the non selected rectangle with the 
+				 * white color and its digit accordingly
+				 */
+				
+				if(Case.cases.get(iterator).getState()==false) {
+					
+					paintRoundRectangle(g, Color.WHITE, largeurRectangle, this.getHeight()/2+20, iterator);
+					centreRectangle = iterator*largeurRectangle + largeurRectangle/2;
+					drawStringOnCase(g, Color.BLACK, gameModelHandle.getDigits().substring(iterator, iterator+1), centreRectangle-20, this.getHeight()/4+30);
+				
+				}
+				
+				/*
+				 * If the case is in a group, we can paint the first rectangle with a color that is in
+				 * colours[], we then skip an iterator to paint the other rectangle with same color as the
+				 * case it is in a group with by picking the color coulour[iterator-1]
+				 */
+				
+				else if(Case.cases.get(iterator).isInGroup()==true) {
+					
+					paintRoundRectangle(g, colours[iterator], largeurRectangle, this.getHeight()/2+20, iterator);
+					centreRectangle = iterator*largeurRectangle + largeurRectangle/2;
+					drawStringOnCase(g, Color.BLACK, gameModelHandle.getDigits().substring(iterator, iterator+1), centreRectangle-20, this.getHeight()/4+30);
+					
+					iterator++;
+					
+					paintRoundRectangle(g, colours[iterator-1], largeurRectangle, this.getHeight()/2+20, iterator);
+					centreRectangle = iterator*largeurRectangle + largeurRectangle/2;
+					drawStringOnCase(g, Color.BLACK, gameModelHandle.getDigits().substring(iterator, iterator+1), centreRectangle-20, this.getHeight()/4+30);
+					
+				}
+				
+				/*
+				 * If all the other conditions were not met, then we can paint the rectangle with a color that is
+				 * in colour[iterator] with its digit
+				 */
+				
+				else {
+					paintRoundRectangle (g, colours[iterator], largeurRectangle, this.getHeight()/2+20, iterator);
+					centreRectangle = iterator*largeurRectangle + largeurRectangle/2;
+					drawStringOnCase (g, Color.BLACK, gameModelHandle.getDigits().substring(iterator, iterator+1), centreRectangle-20, this.getHeight()/4+30);
+				}
 			}
 		}
 		//Call to the method for setting the dimensions of the cases
-		gameModelHandle.setCasesDimensions(this,largeurRectangle,this.getHeight()/2+20);
-		
+		gameModelHandle.setCasesDimensions(this,largeurRectangle,this.getHeight()/2+20);	
 	}
+	
+	/** This method returns the identifier of a case that has been selected depending on
+	 * a x position and a y position
+	 * 
+	 * @param positionX, the x position
+	 * @param positionY, the y position
+	 * @return identifiant, l'identifiant d'une case
+	 */
 	
 	public int caseSelection (int positionX, int positionY) {
 		
+		//The attribut that will retain the identifier
 		int identifiant = 0;
-
-		for(int i=0; i<gameModelHandle.getDigits().length(); i++) {
+		
+		/*
+		 * This for loop determines if positionX and positionY is the dimensions
+		 * of a case by passing through all cases
+		 */
+		
+		for(iterator=0; iterator<gameModelHandle.getDigits().length(); iterator++) {
 	
-			if(positionX > Case.cases.get(i).getX0() && 
-			positionX < Case.cases.get(i).getX1() &&
-			positionY > Case.cases.get(i).getY0() && 
-			positionY < Case.cases.get(i).getY1()) {
+			if(positionX > Case.cases.get(iterator).getX0() && 
+			positionX < Case.cases.get(iterator).getX1() &&
+			positionY > Case.cases.get(iterator).getY0() && 
+			positionY < Case.cases.get(iterator).getY1()) {
 	
-				identifiant = Case.cases.get(i).getIdentifiant();
+				identifiant = Case.cases.get(iterator).getIdentifiant();
 				break;
 				
 			} else
@@ -116,6 +190,15 @@ public class TilePanel extends JPanel {
 	
 	}
 	
+	/** This method paints a round rectangle on g Graphics 
+	 * 
+	 * @param g, the graphics that it will paint on
+	 * @param colour, the color of the round rectangle
+	 * @param width, the width of the rectangle
+	 * @param height, the height of the rectangle
+	 * @param position, the position of the rectangle in the window
+	 */
+	
 	private void paintRoundRectangle (Graphics g, Color colour, int width, int height, int position) {
 		
 		g.setColor(colour);
@@ -123,10 +206,19 @@ public class TilePanel extends JPanel {
 		
 	}
 	
-	private void drawStringOnCases (Graphics g, Color colour, String string, int x, int y) {
+	/** This method draws the digit of a rectangle
+	 * 
+	 * @param g, the graphics that it will paint on
+	 * @param colour, the color of the string
+	 * @param digit, the digit that will be drawn
+	 * @param x, the x position of the string
+	 * @param y, the y position of the string
+	 */
+	
+	private void drawStringOnCase (Graphics g, Color colour, String digit, int x, int y) {
 		
 		g.setColor(Color.BLACK);
-		g.drawString(string,x , y);
+		g.drawString(digit,x , y);
 		
 	}
 		
