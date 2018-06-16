@@ -25,6 +25,7 @@ import java.util.ArrayList;
  * checkIfGoalObtained(), when called, it checks if the goal has been obtained
  * checkIfAllCasesSelected(), when called, it checks if all the cases have been selected
  * sommeBiggerThanGoal(), when called, it checks if the player has surpassed the goal
+ * blockCurrentSum(), it blocks the modification of the sum
  * main(String[]), the main in this class is used for unit tests only
  * 
  * @author Kevin Chénier
@@ -187,10 +188,9 @@ public class GameModel {
 	/** This method calculate the current sum that the player formed at a particular time
 	 * 
 	 * @author Kevin Chenier
-	 * @return somme, the sum that the player formed
 	 */
 	
-	public int getAndSetSomme() {
+	public void setSomme() {
 		
 		//Two variables that will retain the cases selected in the for loop
 		Case case1;
@@ -244,7 +244,16 @@ public class GameModel {
 				}
 			}	
 		}
-		return somme;
+	}
+	
+	/** This method will return the value of somme
+	 * 
+	 * @return somme, the current sum
+	 * @author KevinChénier
+	 */
+	
+	public int getSomme() {
+		return this.somme;
 	}
 	
 	/** This method is used to reinitialize the current sum to 0 when it is necessary to
@@ -324,14 +333,18 @@ public class GameModel {
 		return false;
 	}
 	
-	/** This method will make all states from cases true when called.
+	/** This method will block the state of the current sum
+	 * by setting all the cases state to true and by setting its attributes
+	 * didCalculateSum to true.
 	 * 
 	 * @author Kevin Chenier
 	 */
 	
-	public void makeAllStatesTrue() {
-		for(int i=0; i<getDigits().length(); i++)
+	public void blockCurrentSum() {
+		for(int i=0; i<getDigits().length(); i++) {
 			Case.cases.get(i).setState(true);
+			Case.cases.get(i).setDidCalculateSomme(true);
+		}
 	}
 	
 	/**

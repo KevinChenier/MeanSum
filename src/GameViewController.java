@@ -196,7 +196,8 @@ public class GameViewController extends JPanel {
 					System.err.println("Vous devez sélectionner les cases et non en dehors de ceux-ci");
 				}
 				
-				somme.setText("Somme: " + gameModel.getAndSetSomme());
+				gameModel.setSomme();
+				somme.setText("Somme: " + gameModel.getSomme());
 				
 				//If the goal is achieved, we set the JLabel goalAchieved text to tell the player that he won
 				if(gameModel.checkIfGoalObtained()==true) {
@@ -208,7 +209,7 @@ public class GameViewController extends JPanel {
 					 * won
 					 */
 					
-					gameModel.makeAllStatesTrue();
+					gameModel.blockCurrentSum();
 					
 				/*
 				 * If the goal has not been achieved and the player selected all the cases, then the player
@@ -222,7 +223,7 @@ public class GameViewController extends JPanel {
 					 * anymore
 					 */
 					
-					gameModel.makeAllStatesTrue();
+					gameModel.blockCurrentSum();
 					
 				}
 				
@@ -238,7 +239,7 @@ public class GameViewController extends JPanel {
 					 * anymore
 					 */
 					
-					gameModel.makeAllStatesTrue();
+					gameModel.blockCurrentSum();
 				}
 				
 				repaint();

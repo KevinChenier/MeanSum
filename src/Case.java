@@ -64,6 +64,7 @@ public class Case {
 		
 		/**Accessor to the number of the case
 		 * 
+		 * @return number, the number in the case
 		 * @author Kevin Chenier
 		 */
 		public int getNumber() {
@@ -81,6 +82,7 @@ public class Case {
 		
 		/**Accessor to the state of the case
 		 * 
+		 * @return state, the state of case
 		 * @author Kevin Chenier
 		 */
 		public boolean getState() {
@@ -99,6 +101,7 @@ public class Case {
 		
 		/**Accessor to the identifier of the case
 		 * 
+		 * @return identifiant, the identifier of the case
 		 * @author Kevin Chenier
 		 */
 		public int getIdentifiant() {
@@ -135,6 +138,7 @@ public class Case {
 		/**This method will set the rectangle's bottom side
 		 * 
 		 * @param Y1, rectangle's bottom side
+		 * @author Kevin Chénier
 		 */
 		public void setY1(int Y1) {
 			this.Y1=Y1;
@@ -189,6 +193,7 @@ public class Case {
 		/** Accessor to the isInGroup attribute
 		 * 
 		 * @return isInGroup, true if in group
+		 * @author Kevin Chénier
 		 */
 		public boolean isInGroup() {
 			return this.isInGroup;
@@ -197,6 +202,7 @@ public class Case {
 		/**This method is used when the case has made calculations
 		 * 
 		 * @param didCalculation, true if it made calculations
+		 * @author Kevin Chénier
 		 */
 		public void setDidCalculateSomme(boolean didCalculateSum) {
 			this.didCalculateSum=didCalculateSum;
@@ -205,6 +211,7 @@ public class Case {
 		/**Accessor to the didCalculation attribute
 		 * 
 		 * @return didCalculation, true if it did calculation in sum
+		 * @author Kevin Chénier
 		 */
 		public boolean getDidCalculateSomme() {
 			return this.didCalculateSum;
@@ -213,6 +220,7 @@ public class Case {
 		/** String representation of the number in case
 		 * 
 		 * @return a string representation of the case's number
+		 * @author Kevin Chénier
 		 */	
 		public String toString() {
 			return "" + this.number;
