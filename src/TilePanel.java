@@ -19,8 +19,7 @@ import javax.swing.JPanel;
  */
 public class TilePanel extends JPanel {
 	
-	private int largeurRectangle;
-	private int centreRectangle;
+	private int largeurRectangle, centreRectangle;
 	
 	//An attribut used for iterations purposes (no need to create a variable each time for iteration
 	private int iterator;
@@ -110,7 +109,7 @@ public class TilePanel extends JPanel {
 				 * white color and its digit accordingly
 				 */
 				
-				if(Case.cases.get(iterator).getState()==false) {
+				if(gameModelHandle.getCases().get(iterator).getState()==false) {
 					
 					paintRoundRectangle(g, Color.WHITE, largeurRectangle, this.getHeight()/2+20, iterator);
 					centreRectangle = iterator*largeurRectangle + largeurRectangle/2;
@@ -124,7 +123,7 @@ public class TilePanel extends JPanel {
 				 * case it is in a group with by picking the color coulour[iterator-1]
 				 */
 				
-				else if(Case.cases.get(iterator).isInGroup()==true) {
+				else if(gameModelHandle.getCases().get(iterator).isInGroup()==true) {
 					
 					paintRoundRectangle(g, colours[iterator], largeurRectangle, this.getHeight()/2+20, iterator);
 					centreRectangle = iterator*largeurRectangle + largeurRectangle/2;
@@ -152,42 +151,6 @@ public class TilePanel extends JPanel {
 		}
 		//Call to the method for setting the dimensions of the cases
 		gameModelHandle.setCasesDimensions(this,largeurRectangle,this.getHeight()/2+20);	
-	}
-	
-	/** This method returns the identifier of a case that has been selected depending on
-	 * a x position and a y position
-	 * 
-	 * @param positionX, the x position
-	 * @param positionY, the y position
-	 * @return identifiant, l'identifiant d'une case
-	 */
-	
-	public int caseSelection (int positionX, int positionY) {
-		
-		//The attribut that will retain the identifier
-		int identifiant = 0;
-		
-		/*
-		 * This for loop determines if positionX and positionY is the dimensions
-		 * of a case by passing through all cases
-		 */
-		
-		for(iterator=0; iterator<gameModelHandle.getDigits().length(); iterator++) {
-	
-			if(positionX > Case.cases.get(iterator).getX0() && 
-			positionX < Case.cases.get(iterator).getX1() &&
-			positionY > Case.cases.get(iterator).getY0() && 
-			positionY < Case.cases.get(iterator).getY1()) {
-	
-				identifiant = Case.cases.get(iterator).getIdentifiant();
-				break;
-				
-			} else
-				identifiant = -1;
-		} 
-		
-		return identifiant;
-	
 	}
 	
 	/** This method paints a round rectangle on g Graphics 

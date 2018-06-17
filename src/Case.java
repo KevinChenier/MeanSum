@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * This class is used to control the attributes in the cases. A case has a number, a state
  * an identifier, an attribute that tells if it is in a group, an attribute that tells if it
@@ -32,19 +30,8 @@ import java.util.ArrayList;
 public class Case {
 	
 	//Attributes of the class
-	private int number;
-	private boolean state;
-	private int identifiant;
-	private boolean isInGroup = false;
-	private boolean didCalculateSum = false;
-	
-	private int X0;
-	private int X1;
-	private int Y0;
-	private int Y1;
-	
-	//List containing all the cases
-	static public ArrayList<Case> cases = new ArrayList<Case>();
+	private int number, identifiant, X0, X1, Y0, Y1;
+	private boolean state, isInGroup, didCalculateSum;
 	
 		public Case(int number, boolean state, int identifiant) {
 			this.number = number;
