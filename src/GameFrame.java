@@ -3,8 +3,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 /**
- * NOTE: YOU DO NOT HAVE TO MAKE ANY CHANGES TO THIS CLASS
- * 
  * The game frame is the main window of the game. It instantiates the model
  * and the view-controller. The frame is filled by a single panel containing
  * all the elements, which is the {@link TrainingViewController} object.
@@ -37,8 +35,7 @@ public class GameFrame extends JFrame {
 		// Initialize the interface
 		initUI();
 		
-		
-		// Initialize the view and set it as the main component our window
+		// Initialize the views and set it as the main components for our tabs
 		trainingViewController = new TrainingViewController();
 		arcadeViewController = new ArcadeViewController();
 		JTabbedPane tabbedPane = new JTabbedPane();

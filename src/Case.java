@@ -19,9 +19,8 @@
  * getY0, accessor of the rectangle's top side
  * getY1, accessor of the rectangle's bottom side
  * setIsInGroup(boolean isInGroup), if the case is i a group, it will be set to true
+ * setIsInGroupWith(Case case1), method that will set a link between two cases in a group
  * isInGroup(), accessor to the attribute isInGroup
- * setDidCalculateSomme(boolean didCalculate), if the case has made a calculation, it will be true
- * getDidCalculateSomme(), accessor to the attribute didCalculation
  * toString(), a string representation of the number in the case
  * 
  * @author Kevin Chenier
@@ -31,7 +30,8 @@ public class Case {
 	
 	//Attributes of the class
 	private int number, identifiant, X0, X1, Y0, Y1;
-	private boolean state, isInGroup, didCalculateSum;
+	private boolean state, isInGroup;
+	private Case isInGroupWith;
 	
 		public Case(int number, boolean state, int identifiant) {
 			this.number = number;
@@ -177,6 +177,24 @@ public class Case {
 			this.isInGroup=isInGroup;
 		}
 		
+		/**This method sets a link between two cases that are in a group
+		 * 
+		 * @param case1, the case that is in a group with the other case
+		 * @author Kevin Chenier
+		 */
+		public void setIsInGroupWith(Case case1) {
+			this.isInGroupWith=case1;
+		}
+		
+		/**Method that will return the case that is in a group with the one
+		 * used with the method
+		 * 
+		 * @return isInGroupWith, the case that is a in the group
+		 */
+		public Case getIsInGroupWith() {
+			return this.isInGroupWith;
+		}
+		
 		/** Accessor to the isInGroup attribute
 		 * 
 		 * @return isInGroup, true if in group
@@ -184,24 +202,6 @@ public class Case {
 		 */
 		public boolean isInGroup() {
 			return this.isInGroup;
-		}
-		
-		/**This method is used when the case has made calculations
-		 * 
-		 * @param didCalculation, true if it made calculations
-		 * @author Kevin Chénier
-		 */
-		public void setDidCalculateSomme(boolean didCalculateSum) {
-			this.didCalculateSum=didCalculateSum;
-		}
-		
-		/**Accessor to the didCalculation attribute
-		 * 
-		 * @return didCalculation, true if it did calculation in sum
-		 * @author Kevin Chénier
-		 */
-		public boolean getDidCalculateSomme() {
-			return this.didCalculateSum;
 		}
 		
 		/** String representation of the number in case
@@ -212,7 +212,5 @@ public class Case {
 		public String toString() {
 			return "" + this.number;
 		}
-		
-		
 		
 }
